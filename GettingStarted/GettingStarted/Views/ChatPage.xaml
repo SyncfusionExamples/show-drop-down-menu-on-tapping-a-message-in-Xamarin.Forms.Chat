@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="clr-namespace:GettingStarted"
+             xmlns:sfChat="clr-namespace:Syncfusion.XForms.Chat;assembly=Syncfusion.SfChat.XForms"            
+             xmlns:sfPopup="clr-namespace:Syncfusion.XForms.PopupLayout;assembly=Syncfusion.SfPopupLayout.XForms"
+             mc:Ignorable="d"
+             x:Class="GettingStarted.ChatPage">
+    
+    <ContentPage.BindingContext>
+        <local:ViewModel x:Name="viewModel" />
+    </ContentPage.BindingContext>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style TargetType="sfChat:IncomingMessageAuthorView">
+                <Setter Property="ControlTemplate">
+                    <Setter.Value>
+                        <ControlTemplate>
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="{Binding Author.Name}" HorizontalTextAlignment="Start" BackgroundColor="Transparent" BindingContext="{TemplateBinding BindingContext}"/>
+                                <Image HorizontalOptions="EndAndExpand" Source="GroupExpander.png" HeightRequest="20" WidthRequest="20">
+                                    <Image.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="OnImageTapGestureRecognizerTapped"/>
+                                    </Image.GestureRecognizers>
+                                </Image>
+                            </StackLayout>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <sfPopup:SfPopupLayout x:Name="popupLayout">
+            <sfPopup:SfPopupLayout.PopupView>
+                <sfPopup:PopupView ShowHeader="False" ShowFooter="False" AutoSizeMode="Both"> 
+                    <sfPopup:PopupView.ContentTemplate>
+                        <DataTemplate>
+                            <StackLayout>
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnLabelTapGestureRecognizerTapped"/>
+                                </StackLayout.GestureRecognizers>
+                                
+                                <Label Text="Reply" FontSize="{OnPlatform Android='14', iOS='14', UWP='18'}" HorizontalOptions="Start" VerticalOptions="Center" Padding="16,8,16,8"/>
+                                <Label Text="Reply privately" FontSize="{OnPlatform Android='14', iOS='14', UWP='18'}" HorizontalOptions="Start" VerticalOptions="Center" Padding="16,8,16,8"/>
+                                <Label Text="Forward message" FontSize="{OnPlatform Android='14', iOS='14', UWP='18'}" HorizontalOptions="Start" VerticalOptions="Center" Padding="16,8,16,8"/>
+                                <Label Text="Delete message" FontSize="{OnPlatform Android='14', iOS='14', UWP='18'}" HorizontalOptions="Start" VerticalOptions="Center" Padding="16,8,16,8"/>
+                            </StackLayout>
+                        </DataTemplate>
+                    </sfPopup:PopupView.ContentTemplate>
+                </sfPopup:PopupView>
+            </sfPopup:SfPopupLayout.PopupView>
+            <sfPopup:SfPopupLayout.Content>
+                <Grid x:Name="chatGrid">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <sfChat:SfChat x:Name="sfChat" 
+                           Grid.Row="0"
+                           AllowMultilineInput="True"
+                           Messages="{Binding Messages}"
+                           ShowIncomingMessageAuthorName="True"
+                           ShowOutgoingMessageAuthorName="True"
+                           CurrentUser="{Binding CurrentUser}">
+                    </sfChat:SfChat>
+                </Grid>
+            </sfPopup:SfPopupLayout.Content>
+        </sfPopup:SfPopupLayout>
+    </ContentPage.Content>
+</ContentPage>
